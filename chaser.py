@@ -8,6 +8,7 @@ from math import pi
 
 # Static Vars
 WHITE = 255,255,255
+GREY = 128,128,128
 BLACK = 0,0,0
 up, right, down, left = 0, 1, 2, 3
 
@@ -26,11 +27,11 @@ def rewardGen():
 # Init functions to get our declarations and setup out of the way.
 #
 
-def InitCreateWindow():
+def InitCreateWindow(requestedSize):
 	global windowSize
 	global window
 	
-	windowSize = 200,200
+	windowSize = requestedSize
 	window = pygame.display.set_mode(windowSize)
 	
 	# We need a window to use for pygame
@@ -103,7 +104,7 @@ def LiveDrawPlayer():
 def LiveDrawReward():
 	global rewardRect
 	rewardRect = pygame.Rect(rewardPos[0],rewardPos[1],rewardSize[0],rewardSize[1])
-	reward = pygame.draw.rect(window, WHITE, rewardRect, 0)
+	reward = pygame.draw.rect(window, GREY, rewardRect, 0)
 	
 	# Use the reward variables to draw a reward rectangle
 
@@ -112,19 +113,37 @@ def LiveProcessInputs():
 	global reqMov
 	pygame.event.get()					
 	keys = pygame.key.get_pressed()
-	if keys[K_UP] and playerMov != down:
+	if keys[K_UP]:
 		reqMov = up
-	elif keys[K_RIGHT] and playerMov != left:
+	elif keys[K_RIGHT]:
 		reqMov = right
-	elif keys[K_DOWN] and playerMov != up:
+	elif keys[K_DOWN]:
 		reqMov = down
-	elif keys[K_LEFT] and playerMov != right:
+	elif keys[K_LEFT]:
 		reqMov = left
 	else:
 		reqMov = playerMov
 	playerMov = reqMov
 	
 	# Pull keypress data and check if up,right,down,or left is pressed. If so, check if the direction is eligible and change playerMov to the new direction.
+def LiveNNAction(actions):
+	global playerMov
+	global reqMov
+	
+	if actions[0] and playerMov != down:
+		reqMov = up
+	elif actions[1] and playerMov != left:
+		reqMov = right
+	elif kactions[2] and playerMov != up:
+		reqMov = down
+	elif actions[3] and playerMov != right:
+		reqMov = left
+	else:
+		reqMov = playerMov
+	playerMov = reqMov
+	
+	# Pull keypress data and check if up,right,down,or left is pressed. If so, check if the direction is eligible and change playerMov to the new direction.
+
 
 def LiveMovePlayer():
 	global playerMov
@@ -204,9 +223,9 @@ def LivePlayerDist():
 #
 
 class Game:
-	def __init__(self,playersize):
+	def __init__(self,playersize,mapsize):
 		# Run Init
-		InitCreateWindow()
+		InitCreateWindow(mapsize)
 		InitDrawPlayer(playersize)
 		InitDrawReward()
 		InitPlayerDist()
@@ -220,23 +239,20 @@ class Game:
 		LivePlayerDist()			# Get Player Distance from Reward
 		
 
-	def Process(self, action = (0,0,0,0)):
-		LiveProcessInputs()			# Did the user press a key? If so, update playerMov Direction (Will eventually be replaced with an action variable passed through by neural network at a later time.)
+	def Process(self,delay, action = (0,0,0,0)):
+		LiveProcessInputs()		# Did the user press a key? If so, update playerMov Direction (Will eventually be replaced with an action variable passed through by neural network at a later time.)
+		#LiveNNAction()				# Process NN Action List
 		LiveMovePlayer()			# Move Player toward playerMov Direction
 		LiveAssessReward()			# Did the player collide with the Reward?
 		pygame.display.update() 	# Refresh the display.
-		pygame.time.delay(4)		# Wait X ms 
+		pygame.time.delay(delay)		# Wait X ms 
 
 	def GetFrame(self):
-		LiveExportWindow()			# Returns a 3d array of pixel data.
-
-
-
-# Create class object and run
-game = Game(10)
-while 1:
-	game.Draw()
-	game.GetFrame()
-	game.Process()
-
+		return LiveExportWindow()			# Returns a 3d array of pixel data.
+		
+	def GetScore(self):
+		return playerScore
+		
+	def GetPlayerDist(self):
+		return LivePlayerDist()
 
