@@ -23,10 +23,10 @@ else:
 trainingFrameCount = 4000
 testingFrameCount = 4000
 
-layer1_size = 40
+layer1_size = 128
 layer2_size = 100
 layer3_size = 120
-layer4_size = 128
+layer4_size = 256
 layer5_size = 48
 layer6_size = 48
 layer7_size = 48
@@ -41,13 +41,13 @@ model.add(keras.layers.convolutional.Conv2D(layer1_size, 15, strides=2, input_sh
 model.add(Activation('relu'))
 model.add(keras.layers.pooling.MaxPooling2D(pool_size=(2,2)))
 
-model.add(keras.layers.convolutional.Conv2D(layer2_size, 5))
-model.add(Activation('relu'))
-model.add(keras.layers.pooling.MaxPooling2D(pool_size=(2,2)))
+#model.add(keras.layers.convolutional.Conv2D(layer2_size, 5))
+#model.add(Activation('relu'))
+#model.add(keras.layers.pooling.MaxPooling2D(pool_size=(2,2)))
 
-model.add(keras.layers.convolutional.Conv2D(layer3_size, 2))
-model.add(Activation('relu'))
-model.add(keras.layers.pooling.MaxPooling2D(pool_size=(2,2)))
+#model.add(keras.layers.convolutional.Conv2D(layer3_size, 2))
+#model.add(Activation('relu'))
+#model.add(keras.layers.pooling.MaxPooling2D(pool_size=(2,2)))
 
 model.add(Flatten())
 #model.add(Dense(layer3_size))
@@ -55,7 +55,6 @@ model.add(Flatten())
 #model.add(Dropout(0.1))
 model.add(Dense(layer4_size))
 model.add(Activation('relu'))
-model.add(Dropout(0.5))
 #model.add(Dense(layer5_size))
 #model.add(Activation('relu'))
 #model.add(Dropout(0.05))
@@ -64,7 +63,7 @@ model.add(Dropout(0.5))
 #model.add(Dropout(0.05))
 model.add(Dense(layer7_size))
 model.add(Activation('relu'))
-model.add(Dropout(0.01))
+model.add(Dropout(0.03))
 model.add(Dense(layer8_size))
 model.add(Activation('relu'))
 model.add(Dropout(0.01))
