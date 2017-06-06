@@ -14,15 +14,16 @@ from keras.models import *
 
 
 
-#Initialize Variables
+#Initialize Colors
 WHITE = 255,255,255
 GREY = 128,128,128
 BLACK = 0,0,0
 
+
 canvasSize = (100,100)
 inputType = 'player'
 
-hasNeuralNetCompletedProcesssing = 0
+#hasNeuralNetCompletedProcesssing = 0
 # Nerual Network will toggle this variable to 1 to let us know to continue
 # drawing the frame and then conttinue to the next.
 
@@ -166,7 +167,7 @@ def Collision(Rect1, Rect2):
 
 def UpdateScreen():
 	pygame.display.update()
-	pygame.time.delay(16)
+	#pygame.time.delay(16)
 
 def GetFrame():
 	multichannelframe = pygame.surfarray.array3d(pygame.display.get_surface())
@@ -201,19 +202,20 @@ model = model_from_json(model_json)
 model.load_weights("chaser-model.h5")
 print("\nLoaded model from disk\n")
 
+limit = 0.5
 def TestNN():
 	frame = GetFrame()
 	frame = np.reshape(frame,(1,100,100,1))
 	prediction = model.predict(frame, batch_size=1, verbose=0)
 	#print prediction.shape
 	print prediction
-	if abs(prediction[0][0]) > 0.9:
+	if abs(prediction[0][0]) > limit:
 		return 'up'
-	elif abs(prediction[0][1]) > 0.9:
+	elif abs(prediction[0][1]) > limit:
 		return 'right'
-	elif abs(prediction[0][2]) > 0.9:
+	elif abs(prediction[0][2]) > limit:
 		return 'down'
-	elif abs(prediction[0][3]) > 0.9:
+	elif abs(prediction[0][3]) > limit:
 		return 'left'
 
 
