@@ -11,7 +11,14 @@ BLACK = 0,0,0
 
 #Initialize Pygame Canvas
 canvasSize = (100,100)
+#canvas = pygame.display.set_mode(canvasSize)
+
+#Initialize Pygame Canvas
+canvasSize = (100,100)
 canvas = pygame.display.set_mode(canvasSize)
+
+#NN input image size
+inputImageSize = (32,32)
 
 #Define Game Objects
 class Player():
@@ -79,15 +86,16 @@ def GetClosestPathDir(player,reward):
             # then the player is further up than the reward, and the player needs to move down.
             return down
 
+
 def GenerateTrainingFrames(numberOfIterations):
     iterationCounter = 0
     canvas = pygame.display.set_mode(canvasSize)
-    multichannelframe = np.zeros((canvasSize[0],canvasSize[1],3),dtype=int)
-    frame = np.zeros((canvasSize[0],canvasSize[1]),dtype=int)
+    multichannelframe = np.zeros((inputImageSize[0],inputImageSize[1],3),dtype=int)
+    frame = np.zeros((inputImageSize[0],inputImageSize[1]),dtype=int)
 
     # x_train contains the images in int format
     # image  x  200px  x  200px  x  3 color channel
-    x_train = np.zeros((numberOfIterations,canvasSize[0],canvasSize[1]),dtype=int)
+    x_train = np.zeros((numberOfIterations,inputImageSize[0],inputImageSize[1]),dtype=int)
     # y_train contains the preferred direction as an int
     # image  x  correct direction
     y_train = np.zeros((numberOfIterations,1),dtype=int)
@@ -97,6 +105,7 @@ def GenerateTrainingFrames(numberOfIterations):
     # very quickly spiral out of control.
     print 'Memory Allocation for X:\t',x_train.nbytes/1000/1000,'MB'
     print 'Memory Allocation for Y:\t',y_train.nbytes/1000/1000,'MB'
+    print 'CHASER ### Generating Frames...'
     # End Print to Console
 
     while iterationCounter < numberOfIterations:
@@ -124,6 +133,7 @@ def GenerateTrainingFrames(numberOfIterations):
         # Convert multichannel frame into single channel frame
         # RGB -> Greyscale     (256,256,256) -> (256)
         frame = cv2.cvtColor(cv2.resize(multichannelframe, (canvasSize[0], canvasSize[1])), cv2.COLOR_BGR2GRAY)
+        frame = cv2.resize(frame,inputImageSize)
 
         # Dump frame data into x_train[currentImage]
         np.copyto(x_train[iterationCounter],frame)
@@ -137,9 +147,12 @@ def GenerateTrainingFrames(numberOfIterations):
         #pygame.time.delay(5000)
     return x_train,y_train
 
-for dataset in range(5):
-    x,y = GenerateTrainingFrames(100000)
-    xdir = '/your-home-dir/chaser/data/'+str(dataset)+'_x.npy'
-    ydir = '/your-home-dir/chaser/data/'+str(dataset)+'_y.npy'
-    np.save(xdir, x)
-    np.save(ydir, y)
+for dataset in range(1):
+    offset = 2
+    dataset = dataset + offset
+    if dataset <= 5:
+        x,y = GenerateTrainingFrames(1000000)
+        xdir = '/home/user/chaser/data/new/'+str(dataset)+'_x.npy'
+        ydir = '/home/user/chaser/data/new/'+str(dataset)+'_y.npy'
+        np.save(xdir, x)
+        np.save(ydir, y)
