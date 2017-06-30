@@ -10,7 +10,7 @@ gendata.py
 
 train.py
 - can generate a random dataset of n value, and then trains the nerual network model on that dataset.
-(dataset is a numpy array of a greyscale image from 0 to 255 as the pixel values. The numpy array also has a simple array [x,x,x,x]. x will be between 0 and 1. If the first x is bigger than the rest, then the correct direction the player needs to go, given the random dataset image we're on, is UP. If the second x is bigger than the rest, then the player should go RIGHT. If the third x is bigger than the rest, then the player should go DOWN. if the fourth x is bigger than the rest, the player should go LEFT. 
+(dataset is a numpy array of a greyscale image from 0 to 255 as the pixel values. The numpy array also has a simple array [x,x,x,x]. x will be between 0 and 1. If the first x is bigger than the rest, then the correct direction the player needs to go, given the random dataset image we're on, is UP. If the second x is bigger than the rest, then the player should go RIGHT. If the third x is bigger than the rest, then the player should go DOWN. if the fourth x is bigger than the rest, the player should go LEFT.)
 
 
 chaser.py
