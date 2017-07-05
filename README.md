@@ -1,3 +1,9 @@
+This project is NOT complete. When this project is complete and functional, I'll update this README. In the mean time, just use this project as reference material.
+
+##########
+# Chaser #
+##########
+
 A simple worm-like game, where the player attempts to collide their sprite with a reward sprite. See chaser.py imports for dependencies. (Designed as a training tool for Machine Learning with TensorFlow and Keras.)
 
 uhoh, this may need python2, I've switched to python3, so I'll update this to 3 soon.
