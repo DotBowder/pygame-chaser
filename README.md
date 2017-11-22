@@ -6,7 +6,7 @@ This project is NOT complete. When this project is complete and functional, I'll
 
 A simple worm-like game, where the player attempts to collide their sprite with a reward sprite. See chaser.py imports for dependencies. (Designed as a training tool for Machine Learning with TensorFlow and Keras.)
 
-uhoh, this may need python2, I've switched to python3, so I'll update this to 3 soon.
+uhoh, this may need python2, I've switched to python3. This may never be available. We'll see.
 
 gen.py
 - creates a neural network model and saves it in the current working directory
